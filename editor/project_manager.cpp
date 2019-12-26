@@ -2663,7 +2663,7 @@ ProjectManager::ProjectManager() {
 	ask_update_settings->get_ok()->connect("pressed", this, "_confirm_update_settings");
 	gui_base->add_child(ask_update_settings);
 
-	OS::get_singleton()->set_low_processor_usage_mode(true);
+	OS::get_singleton()->set_low_processor_usage_mode(false);
 
 	npdialog = memnew(ProjectDialog);
 	gui_base->add_child(npdialog);

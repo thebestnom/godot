@@ -512,7 +512,8 @@ void EditorNode::_update_update_spinner() {
 	update_popup->set_item_checked(update_popup->get_item_index(SETTINGS_UPDATE_CONTINUOUSLY), update_continuously);
 	update_popup->set_item_checked(update_popup->get_item_index(SETTINGS_UPDATE_WHEN_CHANGED), !update_continuously);
 
-	OS::get_singleton()->set_low_processor_usage_mode(!update_continuously);
+	/* OS::get_singleton()->set_low_processor_usage_mode(!update_continuously); */
+	OS::get_singleton()->set_low_processor_usage_mode(false);
 }
 
 void EditorNode::_on_plugin_ready(Object *p_script, const String &p_activate_name) {

@@ -2031,7 +2031,6 @@ void ProjectManager::_open_selected_projects() {
         String local_game_path;
         local_game_path = ProjectSettings::get_singleton()->localize_path(path);
         editor_node->load_scene(local_game_path);
-        /* get_tree()->get_root()->add_child(editor_node); */
         get_tree()->_change_scene(editor_node);
         OS::get_singleton()->set_context(OS::CONTEXT_EDITOR);
         return;

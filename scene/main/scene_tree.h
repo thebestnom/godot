@@ -177,7 +177,6 @@ private:
 	Ref<Material> collision_material;
 	int collision_debug_contacts;
 
-	void _change_scene(Node *p_to);
 	//void _call_group(uint32_t p_call_flags,const StringName& p_group,const StringName& p_function,const Variant& p_arg1,const Variant& p_arg2);
 
 	List<Ref<SceneTreeTimer> > timers;
@@ -281,6 +280,7 @@ public:
 
 	_FORCE_INLINE_ Viewport *get_root() const { return root; }
 
+	void _change_scene(Node *p_to);
 	void call_group_flags(uint32_t p_call_flags, const StringName &p_group, const StringName &p_function, VARIANT_ARG_LIST);
 	void notify_group_flags(uint32_t p_call_flags, const StringName &p_group, int p_notification);
 	void set_group_flags(uint32_t p_call_flags, const StringName &p_group, const String &p_name, const Variant &p_value);

@@ -205,6 +205,7 @@ public:
 	void vibrate_handheld(int p_duration_ms);
 
     virtual String get_data_path() const;
+    virtual String get_config_path() const;
     virtual String get_cache_path() const;
 
 	virtual bool _check_internal_feature_support(const String &p_feature);

@@ -752,6 +752,10 @@ String OS_Android::get_data_path() const {
     return "/sdcard/godot";
 }
 
+String OS_Android::get_config_path() const {
+    return "/sdcard/godot";
+}
+
 String OS_Android::get_cache_path() const {
 	return get_data_path();
 }

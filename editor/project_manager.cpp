@@ -2031,7 +2031,7 @@ void ProjectManager::_open_selected_projects() {
         String local_game_path;
 		ProjectSettings::get_singleton()->setup(path, "", false);
 		OS::get_singleton()->set_cwd(path);
-        local_game_path = ProjectSettings::get_singleton()->localize_path(path);
+        local_game_path = GLOBAL_DEF("application/run/main_scene", "");
 		OS::get_singleton()->set_context(OS::CONTEXT_EDITOR);
 		editor_node->load_scene(local_game_path);
 		get_tree()->_change_scene(editor_node);

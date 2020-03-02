@@ -96,6 +96,7 @@ private:
 	//PowerAndroid *power_manager_func;
 
 	int video_driver_index;
+	int context;
 
 public:
 	// functions used by main to initialize/deinitialize the OS
@@ -166,6 +167,7 @@ public:
 	void set_display_size(Size2 p_size);
 
 	void set_context_is_16_bits(bool p_is_16);
+	void set_context(int p_context);
 
 	virtual void set_screen_orientation(ScreenOrientation p_orientation);
 

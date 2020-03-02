@@ -732,6 +732,19 @@ void OS_Android::set_context_is_16_bits(bool p_is_16) {
 	//	rasterizer->set_force_16_bits_fbo(p_is_16);
 }
 
+void OS_Android::set_context(int p_context) {
+	this->context = p_context;
+	if(this->context == OS::CONTEXT_PROJECTMAN || this->context == OS::CONTEXT_EDITOR) {
+		FileAccess::make_default<FileAccessUnix>(FileAccess::ACCESS_RESOURCES);
+		DirAccess::make_default<DirAccessUnix>(DirAccess::ACCESS_RESOURCES);
+	}
+	else {
+
+		FileAccess::make_default<FileAccessAndroid>(FileAccess::ACCESS_RESOURCES);
+		DirAccess::make_default<DirAccessJAndroid>(DirAccess::ACCESS_RESOURCES);
+	}
+}
+
 void OS_Android::joy_connection_changed(int p_device, bool p_connected, String p_name) {
 	return input->joy_connection_changed(p_device, p_connected, p_name, "");
 }

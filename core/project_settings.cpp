@@ -413,7 +413,11 @@ Error ProjectSettings::_setup(const String &p_path, const String &p_main_pack, b
 
 	// Try to use the filesystem for files, according to OS. (only Android -when reading from pck- and iOS use this)
 
-	if (OS::get_singleton()->get_resource_dir() != "") {
+	if (OS::get_singleton()->get_resource_dir() != ""
+#ifdef USE_JAVA_FILE_ACCESS
+&& (p_path == "" || p_path == ".")
+#endif
+) {
 		// OS will call ProjectSettings->get_resource_path which will be empty if not overridden!
 		// If the OS would rather use a specific location, then it will not be empty.
 		resource_path = OS::get_singleton()->get_resource_dir().replace("\\", "/");

@@ -2029,10 +2029,12 @@ void ProjectManager::_open_selected_projects() {
         EditorNode *editor_node = NULL;
         editor_node = memnew(EditorNode);
         String local_game_path;
+		ProjectSettings::get_singleton()->setup(path, "", false);
+		OS::get_singleton()->set_cwd(path);
         local_game_path = ProjectSettings::get_singleton()->localize_path(path);
-        editor_node->load_scene(local_game_path);
-        get_tree()->_change_scene(editor_node);
-        OS::get_singleton()->set_context(OS::CONTEXT_EDITOR);
+		OS::get_singleton()->set_context(OS::CONTEXT_EDITOR);
+		editor_node->load_scene(local_game_path);
+		get_tree()->_change_scene(editor_node);
         return;
 
 		/* if (!FileAccess::exists(conf)) { */

@@ -52,9 +52,9 @@
 #include "scene/gui/texture_rect.h"
 #include "scene/gui/tool_button.h"
 
+#include "editor/editor_node.h"
 #include "scene/main/scene_tree.h"
 #include "scene/main/viewport.h"
-#include "editor/editor_node.h"
 
 static inline String get_project_key_from_path(const String &dir) {
 	return dir.replace("/", "::");
@@ -2019,23 +2019,21 @@ void ProjectManager::_open_selected_projects() {
 
 	const Set<String> &selected_list = _project_list->get_selected_project_keys();
 
-
-
 	for (const Set<String>::Element *E = selected_list.front(); E; E = E->next()) {
 		const String &selected = E->get();
 		String path = EditorSettings::get_singleton()->get("projects/" + selected);
 		String conf = path.plus_file("project.godot");
 
-        EditorNode *editor_node = NULL;
-        editor_node = memnew(EditorNode);
-        String local_game_path;
+		EditorNode *editor_node = NULL;
+		editor_node = memnew(EditorNode);
+		String local_game_path;
 		ProjectSettings::get_singleton()->setup(path, "", false);
 		OS::get_singleton()->set_cwd(path);
-        local_game_path = GLOBAL_DEF("application/run/main_scene", "");
+		local_game_path = GLOBAL_DEF("application/run/main_scene", "");
 		OS::get_singleton()->set_context(OS::CONTEXT_EDITOR);
 		editor_node->load_scene(local_game_path);
 		get_tree()->_change_scene(editor_node);
-        return;
+		return;
 
 		/* if (!FileAccess::exists(conf)) { */
 		/* 	dialog_error->set_text(vformat(TTR("Can't open project at '%s'."), path)); */

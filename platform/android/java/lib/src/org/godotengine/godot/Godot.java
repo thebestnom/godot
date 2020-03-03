@@ -568,7 +568,7 @@ public abstract class Godot extends FragmentActivity implements SensorEventListe
 		mClipboard = (ClipboardManager)getSystemService(Context.CLIPBOARD_SERVICE);
 		pluginRegistry = GodotPluginRegistry.initializePluginRegistry(this);
 
-        requestPermissions();
+		requestPermissions();
 
 		//check for apk expansion API
 		if (true) {

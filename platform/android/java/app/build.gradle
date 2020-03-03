@@ -63,11 +63,9 @@ dependencies {
 //CHUNK_DEPENDENCIES_BEGIN
 //CHUNK_DEPENDENCIES_END
 }
-
 android {
-    compileSdkVersion versions.compileSdk
+	compileSdkVersion versions.compileSdk
     buildToolsVersion versions.buildTools
-
     defaultConfig {
         // Feel free to modify the application id to your own.
         applicationId getExportPackageName()
@@ -89,10 +87,13 @@ android {
     }
 
     // Both signing and zip-aligning will be done at export time
-    buildTypes.all { buildType ->
-        buildType.zipAlignEnabled false
-        buildType.signingConfig null
-    }
+//    buildTypes.all { buildType ->
+//        buildType.zipAlignEnabled true
+//        buildType.signingConfig {storeFile file("C:\\Projects\\godot\\platform\\android\\java\\app\\build\\outputs\\apk\\debug\\debug.keystore")
+//			storePassword '123456'
+//			keyAlias = 'key0'
+//			keyPassword '123456'}
+//    }
 
     sourceSets {
         main {

@@ -672,7 +672,7 @@ void EditorFileSystem::_scan_new_dir(EditorFileSystemDirectory *p_dir, DirAccess
 	while (true) {
 
 		String f = da->get_next();
-   		if (f == "")
+		if (f == "")
 			break;
 
 		if (da->current_is_hidden())

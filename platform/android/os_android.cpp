@@ -734,11 +734,10 @@ void OS_Android::set_context_is_16_bits(bool p_is_16) {
 
 void OS_Android::set_context(int p_context) {
 	this->context = p_context;
-	if(this->context == OS::CONTEXT_PROJECTMAN || this->context == OS::CONTEXT_EDITOR) {
+	if (this->context == OS::CONTEXT_PROJECTMAN || this->context == OS::CONTEXT_EDITOR) {
 		FileAccess::make_default<FileAccessUnix>(FileAccess::ACCESS_RESOURCES);
 		DirAccess::make_default<DirAccessUnix>(DirAccess::ACCESS_RESOURCES);
-	}
-	else {
+	} else {
 
 		FileAccess::make_default<FileAccessAndroid>(FileAccess::ACCESS_RESOURCES);
 		DirAccess::make_default<DirAccessJAndroid>(DirAccess::ACCESS_RESOURCES);
@@ -762,11 +761,11 @@ void OS_Android::vibrate_handheld(int p_duration_ms) {
 }
 
 String OS_Android::get_data_path() const {
-    return "/sdcard/godot";
+	return "/sdcard/godot";
 }
 
 String OS_Android::get_config_path() const {
-    return "/sdcard/godot";
+	return "/sdcard/godot";
 }
 
 String OS_Android::get_cache_path() const {

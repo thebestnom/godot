@@ -10,13 +10,9 @@ buildscript {
     repositories {
         google()
         jcenter()
-//CHUNK_BUILDSCRIPT_REPOSITORIES_BEGIN
-//CHUNK_BUILDSCRIPT_REPOSITORIES_END
     }
     dependencies {
         classpath libraries.androidGradlePlugin
-//CHUNK_BUILDSCRIPT_DEPENDENCIES_BEGIN
-//CHUNK_BUILDSCRIPT_DEPENDENCIES_END
     }
 }
 
@@ -43,21 +39,14 @@ dependencies {
         debugImplementation fileTree(dir: 'libs/debug', include: ['*.jar', '*.aar'])
         releaseImplementation fileTree(dir: 'libs/release', include: ['*.jar', '*.aar'])
     }
-//CHUNK_DEPENDENCIES_BEGIN
-//CHUNK_DEPENDENCIES_END
 }
-
 android {
-    compileSdkVersion versions.compileSdk
+	compileSdkVersion versions.compileSdk
     buildToolsVersion versions.buildTools
-
     defaultConfig {
-        // Feel free to modify the application id to your own.
         applicationId getExportPackageName()
         minSdkVersion versions.minSdk
         targetSdkVersion versions.targetSdk
-//CHUNK_ANDROID_DEFAULTCONFIG_BEGIN
-//CHUNK_ANDROID_DEFAULTCONFIG_END
     }
 
     lintOptions {
@@ -68,12 +57,7 @@ android {
     packagingOptions {
         exclude 'META-INF/LICENSE'
         exclude 'META-INF/NOTICE'
-    }
-
-    // Both signing and zip-aligning will be done at export time
-    buildTypes.all { buildType ->
-        buildType.zipAlignEnabled false
-        buildType.signingConfig null
+		doNotStrip '**/*.so'
     }
 
     sourceSets {
@@ -114,10 +98,7 @@ android {
 
     applicationVariants.all { variant ->
         variant.outputs.all { output ->
-            output.outputFileName = "android_${variant.name}.apk"
+            output.outputFileName = "android_editor_${variant.name}.apk"
         }
     }
 }
-
-//CHUNK_GLOBAL_BEGIN
-//CHUNK_GLOBAL_END

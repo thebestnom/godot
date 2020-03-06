@@ -7,7 +7,7 @@ dependencies {
 def pathToRootDir = "../../../../"
 
 android {
-	compileSdkVersion versions.compileSdk
+    compileSdkVersion versions.compileSdk
     buildToolsVersion versions.buildTools
     useLibrary 'org.apache.http.legacy'
 
@@ -38,13 +38,6 @@ android {
         debug.jniLibs.srcDirs = ['libs/debug']
         release.jniLibs.srcDirs = ['libs/release']
     }
-//	buildTypes.all { buildType ->
-//		buildType.zipAlignEnabled true
-//		buildType.signingConfig {storeFile file("C:\\Projects\\godot\\platform\\android\\java\\app\\build\\outputs\\apk\\debug\\debug.keystore")
-//		storePassword '123456'
-//		keyAlias = 'key0'
-//		keyPassword '123456'}
-//	}
 
     libraryVariants.all { variant ->
         variant.outputs.all { output ->
@@ -59,7 +52,7 @@ android {
         }
 
         // Disable the externalNativeBuild* task as it would cause build failures since the cmake build
-        // files is only setcomup for editing support.
+        // files is only setup for editing support.
         gradle.startParameter.excludedTaskNames += taskPrefix + "externalNativeBuild" + buildType
 
         def releaseTarget = supportedTargets[buildType.toLowerCase()]
@@ -75,7 +68,7 @@ android {
         def taskName = getSconsTaskName(buildType)
         tasks.create(name: taskName, type: Exec) {
             executable "scons" + sconsExt
-            args "tools=true", "--directory=${pathToRootDir}", "platform=android", "target=${releaseTarget}", "android_arch=${defaultAbi}", "-j" + Runtime.runtime.availableProcessors()
+			args "tools=${tools}", "--directory=${pathToRootDir}", "platform=android", "target=${releaseTarget}", "android_arch=${defaultAbi}", "-j" + Runtime.runtime.availableProcessors()
         }
 
         // Schedule the tasks so the generated libs are present before the aar file is packaged.

@@ -346,3 +346,5 @@ compile_commands.json
 
 # Cppcheck
 *.cppcheck
+
+platform/android/java/lib/.cxx/ndk_locator_record.json

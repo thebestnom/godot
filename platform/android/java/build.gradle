@@ -33,6 +33,9 @@ ext {
     // `./gradlew generateGodotTemplates` build command instead after running the `scons` command.
     // The defaultAbi must be one of the {supportedAbis} values.
     defaultAbi = "arm64v8"
+
+	//default for building on Android Studio so editor would be built as well
+	tools=true
 }
 
 def rootDir = "../../.."

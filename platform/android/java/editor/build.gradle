@@ -1,50 +1,16 @@
 // Gradle build config for Godot Engine's Android port.
-//
-// Do not remove/modify comments ending with BEGIN/END, they are used to inject
-// addon-specific configuration.
-apply from: 'config.gradle'
-
-buildscript {
-    apply from: 'config.gradle'
-
-    repositories {
-        google()
-        jcenter()
-    }
-    dependencies {
-        classpath libraries.androidGradlePlugin
-    }
-}
-
 apply plugin: 'com.android.application'
-
-allprojects {
-    repositories {
-        mavenCentral()
-        google()
-        jcenter()
-//CHUNK_ALLPROJECTS_REPOSITORIES_BEGIN
-//CHUNK_ALLPROJECTS_REPOSITORIES_END
-    }
-}
 
 dependencies {
     implementation libraries.supportCoreUtils
-
-    if (rootProject.findProject(":lib")) {
-        implementation project(":lib")
-    } else {
-        // Custom build mode. In this scenario this project is the only one around and the Godot
-        // library is available through the pre-generated godot-lib.*.aar android archive files.
-        debugImplementation fileTree(dir: 'libs/debug', include: ['*.jar', '*.aar'])
-        releaseImplementation fileTree(dir: 'libs/release', include: ['*.jar', '*.aar'])
-    }
+    implementation project(":lib")
 }
+
 android {
-	compileSdkVersion versions.compileSdk
+    compileSdkVersion versions.compileSdk
     buildToolsVersion versions.buildTools
     defaultConfig {
-        applicationId getExportPackageName()
+        applicationId "com.godot.editor"
         minSdkVersion versions.minSdk
         targetSdkVersion versions.targetSdk
     }
@@ -57,43 +23,19 @@ android {
     packagingOptions {
         exclude 'META-INF/LICENSE'
         exclude 'META-INF/NOTICE'
-		doNotStrip '**/*.so'
+        doNotStrip '**/*.so'
     }
 
     sourceSets {
         main {
             manifest.srcFile 'AndroidManifest.xml'
-            java.srcDirs = [
-                    'src'
-//DIR_SRC_BEGIN
-//DIR_SRC_END
-            ]
-            res.srcDirs = [
-                    'res'
-//DIR_RES_BEGIN
-//DIR_RES_END
-            ]
-            aidl.srcDirs = [
-                    'aidl'
-//DIR_AIDL_BEGIN
-//DIR_AIDL_END
-            ]
-            assets.srcDirs = [
-                    'assets'
-//DIR_ASSETS_BEGIN
-//DIR_ASSETS_END
-            ]
+            java.srcDirs = ['src']
+            res.srcDirs = ['res']
+            aidl.srcDirs = ['aidl']
+            assets.srcDirs = ['assets']
         }
-        debug.jniLibs.srcDirs = [
-                'libs/debug'
-//DIR_JNI_DEBUG_BEGIN
-//DIR_JNI_DEBUG_END
-        ]
-        release.jniLibs.srcDirs = [
-                'libs/release'
-//DIR_JNI_RELEASE_BEGIN
-//DIR_JNI_RELEASE_END
-        ]
+        debug.jniLibs.srcDirs = ['libs/debug']
+        release.jniLibs.srcDirs = ['libs/release']
     }
 
     applicationVariants.all { variant ->

@@ -1,5 +1,5 @@
 /*************************************************************************/
-/*  GodotApp.java                                                        */
+/*  GodotEditor.java                                                     */
 /*************************************************************************/
 /*                       This file is part of:                           */
 /*                           GODOT ENGINE                                */
@@ -30,10 +30,17 @@
 
 package com.godot.editor;
 
+import android.os.Bundle;
 import org.godotengine.godot.Godot;
 
 /**
  * Activity for Godot Android editor.
  */
 public class GodotEditor extends Godot {
+
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		requestPermissions();
+		super.onCreate(savedInstanceState);
+	}
 }

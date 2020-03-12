@@ -30,8 +30,11 @@
 
 package org.godotengine.godot.input;
 
+import android.os.Build;
+import android.support.annotation.RequiresApi;
 import android.util.Log;
 import android.view.GestureDetector;
+import android.view.InputDevice;
 import android.view.MotionEvent;
 import org.godotengine.godot.GodotLib;
 import org.godotengine.godot.GodotView;
@@ -70,15 +73,17 @@ public class GodotGestureHandler extends GestureDetector.SimpleOnGestureListener
 		//Log.i("GodotGesture", "onLongPress");
 	}
 
+	@RequiresApi(api = Build.VERSION_CODES.M)
 	@Override
 	public boolean onDoubleTap(MotionEvent event) {
 		//Log.i("GodotGesture", "onDoubleTap");
 		final int x = Math.round(event.getX());
 		final int y = Math.round(event.getY());
+		final int button = event.getSource() == InputDevice.SOURCE_MOUSE ? MotionEvent.BUTTON_PRIMARY : 0; // for now any double click with mouse counts as primery click
 		queueEvent(new Runnable() {
 			@Override
 			public void run() {
-				GodotLib.doubletap(x, y);
+				GodotLib.doubletap(x, y, button);
 			}
 		});
 		return true;

@@ -502,12 +502,72 @@ void OS_Android::process_hover(int p_type, Point2 p_pos) {
 	}
 }
 
-void OS_Android::process_double_tap(Point2 p_pos) {
+void OS_Android::process_mouse_pressed(int p_button, Point2 p_pos, bool pressed) {
+	// https://developer.android.com/reference/android/view/MotionEvent.html#ACTION_HOVER_ENTER
 	Ref<InputEventMouseButton> ev;
 	ev.instance();
 	ev->set_position(p_pos);
 	ev->set_global_position(p_pos);
-	ev->set_pressed(false);
+	ev->set_pressed(pressed);
+	switch(p_button) {
+		case 1: //left button
+			ev->set_button_index(BUTTON_LEFT);
+			break;
+		case 2: //right button
+			ev->set_button_index(BUTTON_RIGHT);
+			break;
+		case 4: //middle button
+			ev->set_button_index(BUTTON_MIDDLE); //pc middle mouse button
+			break;
+		case 5: // wheel down
+			ev->set_button_index(BUTTON_WHEEL_DOWN);
+			break;
+		case 6: // wheel up
+			ev->set_button_index(BUTTON_WHEEL_UP);
+			break;
+	}
+	input->parse_input_event(ev);
+}
+
+void OS_Android::process_mouse_moved_pressed(int p_button, Point2 p_pos) {
+	// https://developer.android.com/reference/android/view/MotionEvent.html#ACTION_HOVER_ENTER
+	Ref<InputEventMouseMotion> ev;
+	ev.instance();
+	ev->set_position(p_pos);
+	ev->set_global_position(p_pos);
+	ev->set_relative(p_pos - hover_prev_pos);
+	switch(p_button) {
+		case 1: //left button
+			ev->set_button_mask(BUTTON_MASK_LEFT);
+			break;
+		case 2: //right button
+			ev->set_button_mask(BUTTON_MASK_RIGHT);
+			break;
+		case 4: //middle button
+			ev->set_button_mask(BUTTON_MASK_MIDDLE);
+			break;
+	}
+	input->parse_input_event(ev);
+	hover_prev_pos = p_pos;
+}
+
+void OS_Android::process_double_tap(Point2 p_pos, int p_button) {
+	Ref<InputEventMouseButton> ev;
+	ev.instance();
+	ev->set_position(p_pos);
+	ev->set_global_position(p_pos);
+	ev->set_pressed(p_button != 0);
+	switch(p_button) {
+		case 1: //left button
+			ev->set_button_index(BUTTON_LEFT);
+			break;
+		case 2: //right button
+			ev->set_button_index(BUTTON_RIGHT);
+			break;
+		case 4: //middle button
+			ev->set_button_index(BUTTON_MIDDLE); //pc middle mouse button
+			break;
+	}
 	ev->set_doubleclick(true);
 	input->parse_input_event(ev);
 }

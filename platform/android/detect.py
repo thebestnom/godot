@@ -158,6 +158,7 @@ def configure(env):
         env.Append(NDK_DEBUG=1)
     if env['tools']:
         env.Append(CPPDEFINES=['USE_JAVA_FILE_ACCESS'])
+        env['split_libmodules'] = True
 		
 
     # Compiler configuration

@@ -2,6 +2,7 @@
 apply plugin: 'com.android.application'
 
 dependencies {
+    implementation libraries.v4Support
     implementation libraries.supportCoreUtils
     implementation project(":lib")
 }

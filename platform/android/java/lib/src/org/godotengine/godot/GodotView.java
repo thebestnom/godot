@@ -95,7 +95,7 @@ public class GodotView extends GLSurfaceView {
 	public boolean onTouchEvent(MotionEvent event) {
 		super.onTouchEvent(event);
 		this.detector.onTouchEvent(event);
-		return activity.gotTouchEvent(event);
+		return inputHandler.onTouchEvent(event) || activity.gotTouchEvent(event);
 	}
 
 	@Override

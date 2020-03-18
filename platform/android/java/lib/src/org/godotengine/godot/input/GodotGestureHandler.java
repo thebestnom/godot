@@ -32,7 +32,6 @@ package org.godotengine.godot.input;
 
 import android.os.Build;
 import android.support.annotation.RequiresApi;
-import android.util.Log;
 import android.view.GestureDetector;
 import android.view.InputDevice;
 import android.view.MotionEvent;
@@ -83,7 +82,7 @@ public class GodotGestureHandler extends GestureDetector.SimpleOnGestureListener
 		queueEvent(new Runnable() {
 			@Override
 			public void run() {
-				GodotLib.doubletap(x, y, button);
+				GodotLib.double_tap(button, x, y);
 			}
 		});
 		return true;

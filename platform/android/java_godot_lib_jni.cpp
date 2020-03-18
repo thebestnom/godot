@@ -311,7 +311,7 @@ JNIEXPORT void JNICALL Java_org_godotengine_godot_GodotLib_mouse_1moved_1pressed
 	os_android->process_mouse_moved_pressed(p_button, Point2(p_x, p_y));
 }
 
-JNIEXPORT void JNICALL Java_org_godotengine_godot_GodotLib_doubletap(JNIEnv *env, jclass clazz, jint p_x, jint p_y, jint p_button) {
+JNIEXPORT void JNICALL Java_org_godotengine_godot_GodotLib_double_1tap(JNIEnv *env, jclass clazz, jint p_button, jint p_x, jint p_y) {
 	if (step == 0)
 		return;
 

@@ -48,7 +48,7 @@ JNIEXPORT void JNICALL Java_org_godotengine_godot_GodotLib_touch(JNIEnv *env, jc
 JNIEXPORT void JNICALL Java_org_godotengine_godot_GodotLib_hover(JNIEnv *env, jclass clazz, jint p_type, jint p_x, jint p_y);
 JNIEXPORT void JNICALL Java_org_godotengine_godot_GodotLib_mouse_1pressed(JNIEnv *env, jclass clazz, jint p_button, jint p_x, jint p_y, jboolean pressed);
 JNIEXPORT void JNICALL Java_org_godotengine_godot_GodotLib_mouse_1moved_1pressed(JNIEnv *env, jclass clazz, jint p_button, jint p_x, jint p_y);
-JNIEXPORT void JNICALL Java_org_godotengine_godot_GodotLib_doubletap(JNIEnv *env, jclass clazz, jint p_x, jint p_y, jint p_button);
+JNIEXPORT void JNICALL Java_org_godotengine_godot_GodotLib_double_1tap(JNIEnv *env, jclass clazz, jint p_button, jint p_x, jint p_y);
 JNIEXPORT void JNICALL Java_org_godotengine_godot_GodotLib_scroll(JNIEnv *env, jclass clazz, jint p_x, jint p_y);
 JNIEXPORT void JNICALL Java_org_godotengine_godot_GodotLib_key(JNIEnv *env, jclass clazz, jint p_scancode, jint p_unicode_char, jboolean p_pressed);
 JNIEXPORT void JNICALL Java_org_godotengine_godot_GodotLib_joybutton(JNIEnv *env, jclass clazz, jint p_device, jint p_button, jboolean p_pressed);

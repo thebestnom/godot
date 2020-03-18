@@ -112,7 +112,7 @@ public class GodotLib {
 	/**
 	 * Forward double_tap events from the main thread to the GL thread.
 	 */
-	public static native void doubletap(int x, int y, int button);
+	public static native void double_tap(int button, int x, int y);
 
 	/**
 	 * Forward scroll events from the main thread to the GL thread.

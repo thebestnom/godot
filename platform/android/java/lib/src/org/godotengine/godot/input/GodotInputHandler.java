@@ -57,7 +57,7 @@ public class GodotInputHandler implements InputDeviceListener {
 
 	private final GodotView godotView;
 	private final InputManagerCompat inputManager;
-	private final boolean[] pressedMouseButtons = {false, false, false, false};
+	private final boolean[] pressedMouseButtons = { false, false, false, false };
 
 	public GodotInputHandler(GodotView godotView) {
 		this.godotView = godotView;
@@ -226,8 +226,8 @@ public class GodotInputHandler implements InputDeviceListener {
 			return true;
 		} else if ((event.getSource() & InputDevice.SOURCE_MOUSE) == InputDevice.SOURCE_MOUSE) {
 			if (event.getActionMasked() == MotionEvent.ACTION_HOVER_ENTER ||
-				event.getActionMasked() == MotionEvent.ACTION_HOVER_MOVE ||
-				event.getActionMasked() == MotionEvent.ACTION_HOVER_EXIT) {
+					event.getActionMasked() == MotionEvent.ACTION_HOVER_MOVE ||
+					event.getActionMasked() == MotionEvent.ACTION_HOVER_EXIT) {
 				final int x = Math.round(event.getX());
 				final int y = Math.round(event.getY());
 				final int type = event.getAction();

@@ -296,7 +296,6 @@ JNIEXPORT void JNICALL Java_org_godotengine_godot_GodotLib_hover(JNIEnv *env, jc
 	os_android->process_hover(p_type, Point2(p_x, p_y));
 }
 
-
 JNIEXPORT void JNICALL Java_org_godotengine_godot_GodotLib_mouse_1pressed(JNIEnv *env, jclass clazz, jint p_button, jint p_x, jint p_y, jboolean pressed) {
 	if (step == 0)
 		return;

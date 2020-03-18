@@ -166,7 +166,7 @@ public class GodotInputHandler implements InputDeviceListener {
 		final int x = Math.round(event.getX());
 		final int y = Math.round(event.getY());
 		for (int i = 0; i < pressedMouseButtons.length; i++) {
-			if(pressedMouseButtons[i]) {
+			if (pressedMouseButtons[i]) {
 				final int button = i + 1;
 				queueEvent(new Runnable() {
 					@Override
@@ -224,10 +224,10 @@ public class GodotInputHandler implements InputDeviceListener {
 				}
 			});
 			return true;
-		} else if((event.getSource() & InputDevice.SOURCE_MOUSE) == InputDevice.SOURCE_MOUSE) {
-			if(event.getActionMasked() == MotionEvent.ACTION_HOVER_ENTER ||
+		} else if ((event.getSource() & InputDevice.SOURCE_MOUSE) == InputDevice.SOURCE_MOUSE) {
+			if (event.getActionMasked() == MotionEvent.ACTION_HOVER_ENTER ||
 				event.getActionMasked() == MotionEvent.ACTION_HOVER_MOVE ||
-				event.getActionMasked() == MotionEvent.ACTION_HOVER_EXIT ) {
+				event.getActionMasked() == MotionEvent.ACTION_HOVER_EXIT) {
 				final int x = Math.round(event.getX());
 				final int y = Math.round(event.getY());
 				final int type = event.getAction();
@@ -238,7 +238,7 @@ public class GodotInputHandler implements InputDeviceListener {
 					}
 				});
 				return true;
-			} else if(event.getAction() == MotionEvent.ACTION_BUTTON_PRESS){
+			} else if (event.getAction() == MotionEvent.ACTION_BUTTON_PRESS) {
 				final int x = Math.round(event.getX());
 				final int y = Math.round(event.getY());
 				final int button = event.getActionButton();
@@ -250,7 +250,7 @@ public class GodotInputHandler implements InputDeviceListener {
 				});
 				pressedMouseButtons[button - 1] = true;
 				return true;
-			}  else if(event.getAction() == MotionEvent.ACTION_BUTTON_RELEASE){
+			} else if (event.getAction() == MotionEvent.ACTION_BUTTON_RELEASE) {
 				final int x = Math.round(event.getX());
 				final int y = Math.round(event.getY());
 				final int button = event.getActionButton();
@@ -262,7 +262,7 @@ public class GodotInputHandler implements InputDeviceListener {
 				});
 				pressedMouseButtons[button - 1] = false;
 				return true;
-			} else if(event.getAction() == MotionEvent.ACTION_SCROLL) {
+			} else if (event.getAction() == MotionEvent.ACTION_SCROLL) {
 				final int x = Math.round(event.getX());
 				final int y = Math.round(event.getY());
 

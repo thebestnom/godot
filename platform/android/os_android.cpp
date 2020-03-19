@@ -521,9 +521,11 @@ void OS_Android::process_mouse_pressed(int p_button, Point2 p_pos, bool pressed)
 			break;
 		case 5: // wheel down
 			ev->set_button_index(BUTTON_WHEEL_DOWN);
+			ev->set_factor(1);
 			break;
 		case 6: // wheel up
 			ev->set_button_index(BUTTON_WHEEL_UP);
+			ev->set_factor(1);
 			break;
 	}
 	input->parse_input_event(ev);

@@ -270,6 +270,7 @@ public class GodotInputHandler implements InputDeviceListener {
 					queueEvent(new Runnable() {
 						@Override
 						public void run() {
+							GodotLib.mouse_pressed(5, x, y, true); //wheel down
 							GodotLib.mouse_pressed(5, x, y, false); //wheel down
 						}
 					});
@@ -277,6 +278,7 @@ public class GodotInputHandler implements InputDeviceListener {
 					queueEvent(new Runnable() {
 						@Override
 						public void run() {
+							GodotLib.mouse_pressed(6, x, y, true); //wheel up
 							GodotLib.mouse_pressed(6, x, y, false); //wheel up
 						}
 					});

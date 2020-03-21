@@ -286,7 +286,7 @@ public class GodotInputHandler implements InputDeviceListener {
 						}
 					});
 				}
-				if(event.getAxisValue(MotionEvent.AXIS_HSCROLL) < 0.0f) {
+				if (event.getAxisValue(MotionEvent.AXIS_HSCROLL) < 0.0f) {
 					queueEvent(new Runnable() {
 						@Override
 						public void run() {
@@ -294,8 +294,7 @@ public class GodotInputHandler implements InputDeviceListener {
 							GodotLib.mousePressed(MOUSE_WHEEL_RIGHT, x, y, false);
 						}
 					});
-				}
-				else {
+				} else {
 					queueEvent(new Runnable() {
 						@Override
 						public void run() {

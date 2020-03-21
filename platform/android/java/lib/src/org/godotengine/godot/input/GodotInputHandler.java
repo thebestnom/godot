@@ -33,7 +33,6 @@ package org.godotengine.godot.input;
 import static org.godotengine.godot.utils.GLUtils.DEBUG;
 
 import android.os.Build;
-import android.renderscript.ScriptGroup;
 import android.support.annotation.RequiresApi;
 import android.util.Log;
 import android.view.InputDevice;
@@ -171,7 +170,7 @@ public class GodotInputHandler implements InputDeviceListener {
 				queueEvent(new Runnable() {
 					@Override
 					public void run() {
-						GodotLib.mouse_moved_pressed(button, x, y);
+						GodotLib.mouseMovedPressed(button, x, y);
 					}
 				});
 			}
@@ -245,7 +244,7 @@ public class GodotInputHandler implements InputDeviceListener {
 				queueEvent(new Runnable() {
 					@Override
 					public void run() {
-						GodotLib.mouse_pressed(button, x, y, true);
+						GodotLib.mousePressed(button, x, y, true);
 					}
 				});
 				pressedMouseButtons[button - 1] = true;
@@ -257,7 +256,7 @@ public class GodotInputHandler implements InputDeviceListener {
 				queueEvent(new Runnable() {
 					@Override
 					public void run() {
-						GodotLib.mouse_pressed(button, x, y, false);
+						GodotLib.mousePressed(button, x, y, false);
 					}
 				});
 				pressedMouseButtons[button - 1] = false;
@@ -270,16 +269,16 @@ public class GodotInputHandler implements InputDeviceListener {
 					queueEvent(new Runnable() {
 						@Override
 						public void run() {
-							GodotLib.mouse_pressed(5, x, y, true); //wheel down
-							GodotLib.mouse_pressed(5, x, y, false); //wheel down
+							GodotLib.mousePressed(5, x, y, true); //wheel down
+							GodotLib.mousePressed(5, x, y, false); //wheel down
 						}
 					});
 				else {
 					queueEvent(new Runnable() {
 						@Override
 						public void run() {
-							GodotLib.mouse_pressed(6, x, y, true); //wheel up
-							GodotLib.mouse_pressed(6, x, y, false); //wheel up
+							GodotLib.mousePressed(6, x, y, true); //wheel up
+							GodotLib.mousePressed(6, x, y, false); //wheel up
 						}
 					});
 				}

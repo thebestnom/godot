@@ -57,6 +57,10 @@ public class GodotInputHandler implements InputDeviceListener {
 	private final GodotView godotView;
 	private final InputManagerCompat inputManager;
 	private final boolean[] pressedMouseButtons = { false, false, false, false };
+	private final int MOUSE_WHEEL_UP = 5;
+	private final int MOUSE_WHEEL_DOWN = 6;
+	private final int MOUSE_WHEEL_RIGHT = 7;
+	private final int MOUSE_WHEEL_LEFT = 8;
 
 	public GodotInputHandler(GodotView godotView) {
 		this.godotView = godotView;
@@ -269,16 +273,34 @@ public class GodotInputHandler implements InputDeviceListener {
 					queueEvent(new Runnable() {
 						@Override
 						public void run() {
-							GodotLib.mousePressed(5, x, y, true); //wheel down
-							GodotLib.mousePressed(5, x, y, false); //wheel down
+							GodotLib.mousePressed(MOUSE_WHEEL_UP, x, y, true);
+							GodotLib.mousePressed(MOUSE_WHEEL_UP, x, y, false);
 						}
 					});
 				else {
 					queueEvent(new Runnable() {
 						@Override
 						public void run() {
-							GodotLib.mousePressed(6, x, y, true); //wheel up
-							GodotLib.mousePressed(6, x, y, false); //wheel up
+							GodotLib.mousePressed(MOUSE_WHEEL_DOWN, x, y, true);
+							GodotLib.mousePressed(MOUSE_WHEEL_DOWN, x, y, false);
+						}
+					});
+				}
+				if(event.getAxisValue(MotionEvent.AXIS_HSCROLL) < 0.0f) {
+					queueEvent(new Runnable() {
+						@Override
+						public void run() {
+							GodotLib.mousePressed(MOUSE_WHEEL_RIGHT, x, y, true);
+							GodotLib.mousePressed(MOUSE_WHEEL_RIGHT, x, y, false);
+						}
+					});
+				}
+				else {
+					queueEvent(new Runnable() {
+						@Override
+						public void run() {
+							GodotLib.mousePressed(MOUSE_WHEEL_LEFT, x, y, true);
+							GodotLib.mousePressed(MOUSE_WHEEL_LEFT, x, y, false);
 						}
 					});
 				}

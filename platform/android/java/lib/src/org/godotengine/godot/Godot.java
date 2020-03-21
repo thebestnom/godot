@@ -971,7 +971,9 @@ public abstract class Godot extends FragmentActivity implements SensorEventListe
 	}
 
 	public boolean gotTouchEvent(final MotionEvent event) {
-		if ((event.getSource() & InputDevice.SOURCE_MOUSE) == InputDevice.SOURCE_MOUSE) {
+		if (event.isFromSource(InputDevice.SOURCE_MOUSE)) {
+			//we return true because every time a mouse event is fired, the event is already handled
+			// in onGenericMotionEvent, so by touch event we can say that the event is also handled
 			return true;
 		}
 		final int evcount = event.getPointerCount();

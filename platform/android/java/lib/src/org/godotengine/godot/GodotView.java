@@ -33,6 +33,7 @@ import android.annotation.SuppressLint;
 import android.graphics.PixelFormat;
 import android.opengl.GLSurfaceView;
 import android.view.GestureDetector;
+import android.view.InputDevice;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import org.godotengine.godot.input.GodotGestureHandler;
@@ -95,7 +96,12 @@ public class GodotView extends GLSurfaceView {
 	public boolean onTouchEvent(MotionEvent event) {
 		super.onTouchEvent(event);
 		this.detector.onTouchEvent(event);
-		return inputHandler.onTouchEvent(event) || activity.gotTouchEvent(event);
+		if (!event.isFromSource(InputDevice.SOURCE_MOUSE)) {
+			return activity.gotTouchEvent(event);
+		}
+		else {
+			return inputHandler.handleMouseDragEvent(event);
+		}
 	}
 
 	@Override

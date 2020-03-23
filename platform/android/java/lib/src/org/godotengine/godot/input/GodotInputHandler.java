@@ -416,8 +416,8 @@ public class GodotInputHandler implements InputDeviceListener {
 
 	private boolean handleMouseEvent(MotionEvent event) {
 		if (event.getActionMasked() == MotionEvent.ACTION_HOVER_ENTER ||
-			event.getActionMasked() == MotionEvent.ACTION_HOVER_MOVE ||
-			event.getActionMasked() == MotionEvent.ACTION_HOVER_EXIT) {
+				event.getActionMasked() == MotionEvent.ACTION_HOVER_MOVE ||
+				event.getActionMasked() == MotionEvent.ACTION_HOVER_EXIT) {
 			final int x = Math.round(event.getX());
 			final int y = Math.round(event.getY());
 			final int type = event.getAction();
@@ -443,7 +443,7 @@ public class GodotInputHandler implements InputDeviceListener {
 		} else if (event.getAction() == MotionEvent.ACTION_BUTTON_RELEASE) {
 			final int x = Math.round(event.getX());
 			final int y = Math.round(event.getY());
-			final int button =  getEventButton(event);
+			final int button = getEventButton(event);
 			queueEvent(new Runnable() {
 				@Override
 				public void run() {

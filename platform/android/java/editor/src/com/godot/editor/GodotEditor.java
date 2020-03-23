@@ -42,13 +42,4 @@ public class GodotEditor extends Godot {
 		requestPermissions();
 		super.onCreate(savedInstanceState);
 	}
-
-//	@RequiresApi(api = Build.VERSION_CODES.M)
-//	@Override
-//	public boolean onGenericMotionEvent(MotionEvent event) {
-//		if(event.getActionButton() == MotionEvent.ACTION_HOVER_MOVE) {
-//			GodotLib.mouse_move();
-//		}
-//		return super.onGenericMotionEvent(event);
-//	}
 }

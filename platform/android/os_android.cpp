@@ -539,43 +539,33 @@ void OS_Android::process_mouse_pressed(int p_button, Point2 p_pos, bool pressed)
 	input->parse_input_event(ev);
 }
 
-void OS_Android::process_mouse_moved_pressed(int p_button, Point2 p_pos) {
+void OS_Android::process_mouse_moved_pressed(int p_button_mask, Point2 p_pos) {
 	// https://developer.android.com/reference/android/view/MotionEvent.html#ACTION_HOVER_ENTER
 	Ref<InputEventMouseMotion> ev;
 	ev.instance();
 	ev->set_position(p_pos);
 	ev->set_global_position(p_pos);
 	ev->set_relative(p_pos - hover_prev_pos);
-	switch (p_button) {
-		case 1: //left button
-			ev->set_button_mask(BUTTON_MASK_LEFT);
-			break;
-		case 2: //right button
-			ev->set_button_mask(BUTTON_MASK_RIGHT);
-			break;
-		case 4: //middle button
-			ev->set_button_mask(BUTTON_MASK_MIDDLE);
-			break;
-	}
+	ev->set_button_mask(p_button_mask);
 	input->parse_input_event(ev);
 	hover_prev_pos = p_pos;
 }
 
-void OS_Android::process_double_tap(Point2 p_pos, int p_button) {
+void OS_Android::process_double_tap(int p_button_mask, Point2 p_pos) {
 	Ref<InputEventMouseButton> ev;
 	ev.instance();
 	ev->set_position(p_pos);
 	ev->set_global_position(p_pos);
-	ev->set_pressed(p_button != 0);
-	switch (p_button) {
-		case 1: //left button
+	ev->set_pressed(p_button_mask != 0);
+	switch (p_button_mask) {
+		case BUTTON_MASK_LEFT:
 			ev->set_button_index(BUTTON_LEFT);
 			break;
-		case 2: //right button
+		case BUTTON_MASK_RIGHT:
 			ev->set_button_index(BUTTON_RIGHT);
 			break;
-		case 4: //middle button
-			ev->set_button_index(BUTTON_MIDDLE); //pc middle mouse button
+		case BUTTON_MASK_MIDDLE:
+			ev->set_button_index(BUTTON_MIDDLE);
 			break;
 	}
 	ev->set_doubleclick(true);

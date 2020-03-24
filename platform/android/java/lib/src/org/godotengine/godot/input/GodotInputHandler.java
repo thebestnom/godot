@@ -55,7 +55,7 @@ public class GodotInputHandler implements InputDeviceListener {
 
 	private final GodotView godotView;
 	private final InputManagerCompat inputManager;
-	private final boolean[] pressedMouseButtons = { false, false, false, false };
+	private int buttonsState = 0;
 	private final int MOUSE_WHEEL_UP = 5;
 	private final int MOUSE_WHEEL_DOWN = 6;
 	private final int MOUSE_WHEEL_RIGHT = 7;
@@ -173,30 +173,13 @@ public class GodotInputHandler implements InputDeviceListener {
 		}
 		final int x = Math.round(event.getX());
 		final int y = Math.round(event.getY());
-		if ((event.getButtonState() & MotionEvent.BUTTON_PRIMARY) == MotionEvent.BUTTON_PRIMARY) {
-			queueEvent(new Runnable() {
+		final int buttonMask = event.getButtonState();
+		queueEvent(new Runnable() {
 				@Override
 				public void run() {
-					GodotLib.mouseMovedPressed(MotionEvent.BUTTON_PRIMARY, x, y);
+					GodotLib.mouseMovedPressed(buttonMask, x, y);
 				}
 			});
-		}
-		if ((event.getButtonState() & MotionEvent.BUTTON_SECONDARY) == MotionEvent.BUTTON_SECONDARY) {
-			queueEvent(new Runnable() {
-				@Override
-				public void run() {
-					GodotLib.mouseMovedPressed(MotionEvent.BUTTON_SECONDARY, x, y);
-				}
-			});
-		}
-		if ((event.getButtonState() & MotionEvent.BUTTON_TERTIARY) == MotionEvent.BUTTON_TERTIARY) {
-			queueEvent(new Runnable() {
-				@Override
-				public void run() {
-					GodotLib.mouseMovedPressed(MotionEvent.BUTTON_TERTIARY, x, y);
-				}
-			});
-		}
 		return true;
 	}
 
@@ -438,7 +421,7 @@ public class GodotInputHandler implements InputDeviceListener {
 					GodotLib.mousePressed(button, x, y, true);
 				}
 			});
-			pressedMouseButtons[button - 1] = true;
+			buttonsState = event.getButtonState();
 			return true;
 		} else if (event.getAction() == MotionEvent.ACTION_BUTTON_RELEASE) {
 			final int x = Math.round(event.getX());
@@ -450,7 +433,7 @@ public class GodotInputHandler implements InputDeviceListener {
 					GodotLib.mousePressed(button, x, y, false);
 				}
 			});
-			pressedMouseButtons[button - 1] = false;
+			buttonsState = event.getButtonState();
 			return true;
 		} else if (event.getAction() == MotionEvent.ACTION_SCROLL) {
 			final int x = Math.round(event.getX());
@@ -499,20 +482,7 @@ public class GodotInputHandler implements InputDeviceListener {
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
 			return event.getActionButton();
 		} else {
-			// older phones does not support action button so manual getButton from buttonState is required
-			for (int i = 0; i < pressedMouseButtons.length; i++) {
-				// 2 is a dead index because we add 1 to it as button which makes 3 which is 0b11
-
-				// check bit and to test if specific button is pressed
-				if ((i != 2) && !pressedMouseButtons[i] && ((event.getButtonState() & (i + 1)) != 0)) {
-					return i + 1;
-				}
-				// check bit and to test if specific button is released
-				if ((i != 2) && pressedMouseButtons[i] && ((event.getButtonState() & (i + 1)) == 0)) {
-					return i + 1;
-				}
-			}
-			throw new UnknownError("no button is pressed?");
+			return event.getButtonState() ^ buttonsState;
 		}
 	}
 }

@@ -175,11 +175,11 @@ public class GodotInputHandler implements InputDeviceListener {
 		final int y = Math.round(event.getY());
 		final int buttonMask = event.getButtonState();
 		queueEvent(new Runnable() {
-				@Override
-				public void run() {
-					GodotLib.mouseMovedPressed(buttonMask, x, y);
-				}
-			});
+			@Override
+			public void run() {
+				GodotLib.mouseMovedPressed(buttonMask, x, y);
+			}
+		});
 		return true;
 	}
 

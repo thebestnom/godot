@@ -102,7 +102,7 @@ public class GodotLib {
 	/**
 	 * Forward mouse pressed events from the main thread to the GL thread.
 	 */
-	public static native void mouseEvent(int actionMask, int buttonMask, float x, float y);
+	public static native void mouseEvent(int actionMask, int buttonMask, float x, float y, boolean isCaptured);
 
 	/**
 	 * Forward double_tap events from the main thread to the GL thread.

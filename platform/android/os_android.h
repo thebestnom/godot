@@ -69,7 +69,7 @@ public:
 
 private:
 	Vector<TouchPos> touch;
-	Point2 hover_prev_pos; // needed to calculate the relative position on hover events
+	Point2 prev_pointer_pos; // needed to calculate the relative position on hover events
 	Point2 scroll_prev_pos; // needed to calculate the relative position on scroll events
 
 	bool use_gl2;
@@ -107,7 +107,10 @@ private:
 	static const int ACTION_MOVE = 2;
 	int buttons_state;
 
+	MouseMode mouse_mode;
+
 public:
+	void set_mouse_mode(MouseMode p_mode);
 	// functions used by main to initialize/deinitialize the OS
 	virtual int get_video_driver_count() const;
 	virtual const char *get_video_driver_name(int p_driver) const;
@@ -199,7 +202,7 @@ public:
 	void process_gyroscope(const Vector3 &p_gyroscope);
 	void process_touch(int p_what, int p_pointer, const Vector<TouchPos> &p_points);
 	void process_hover(int p_type, Point2 p_pos);
-	void process_mouse_event(int p_action, int p_button_mask, Point2 p_pos);
+	void process_mouse_event(int p_action, int p_button_mask, Point2 p_pos, bool p_is_capture);
 
 	void process_double_tap(int p_button_mask, Point2 p_pos);
 	void process_scroll(Point2 p_pos);

@@ -100,6 +100,16 @@ jobject GodotJavaWrapper::get_class_loader() {
 	}
 }
 
+GodotJavaViewWrapper* GodotJavaWrapper::get_godot_view() {
+	if (_godot_view != NULL) {
+		return _godot_view;
+	}
+	JNIEnv *env = ThreadAndroid::get_env();
+	jfieldID godot_view_field_id = env->GetFieldID(cls, "mView", "Lorg/godotengine/godot/GodotView;");
+	_godot_view = new GodotJavaViewWrapper(env->GetObjectField(godot_instance, godot_view_field_id));
+	return _godot_view;
+}
+
 void GodotJavaWrapper::gfx_init(bool gl2) {
 	// beats me what this once did, there was no code,
 	// but we're getting false if our GLES3 driver is initialised

@@ -215,6 +215,20 @@ void OS_Android::alert(const String &p_alert, const String &p_title) {
 	godot_java->alert(p_alert, p_title);
 }
 
+void OS_Android::set_mouse_mode(MouseMode p_mode) {
+	if (mouse_mode == p_mode)
+		return;
+
+	if (p_mode == MouseMode::MOUSE_MODE_CAPTURED) {
+		godot_java->get_godot_view()->request_pointer_capture();
+	} else {
+		godot_java->get_godot_view()->release_pointer_capture();
+	}
+
+	mouse_mode = p_mode;
+}
+
+
 bool OS_Android::request_permission(const String &p_name) {
 
 	return godot_java->request_permission(p_name);
@@ -254,12 +268,12 @@ bool OS_Android::is_mouse_grab_enabled() const {
 
 Point2 OS_Android::get_mouse_position() const {
 
-	return Point2();
+	return prev_pointer_pos;
 }
 
 int OS_Android::get_mouse_button_state() const {
 
-	return 0;
+	return buttons_state;
 }
 
 void OS_Android::set_window_title(const String &p_title) {
@@ -497,22 +511,26 @@ void OS_Android::process_hover(int p_type, Point2 p_pos) {
 			ev.instance();
 			ev->set_position(p_pos);
 			ev->set_global_position(p_pos);
-			ev->set_relative(p_pos - hover_prev_pos);
+			ev->set_relative(p_pos - prev_pointer_pos);
 			input->parse_input_event(ev);
-			hover_prev_pos = p_pos;
+			prev_pointer_pos = p_pos;
 		} break;
 	}
 }
 
-void OS_Android::process_mouse_event(int p_action, int p_button_mask, Point2 p_pos) {
-	// https://developer.android.com/reference/android/view/MotionEvent.html#ACTION_HOVER_ENTER
+void OS_Android::process_mouse_event(int p_action, int p_button_mask, Point2 p_pos, bool p_is_capture) {
 	switch (p_action) {
 		case ACTION_BUTTON_PRESS:
 		case ACTION_BUTTON_RELEASE: {
 			Ref<InputEventMouseButton> ev;
 			ev.instance();
-			ev->set_position(p_pos);
-			ev->set_global_position(p_pos);
+			if (!p_is_capture) {
+				ev->set_position(p_pos);
+				ev->set_global_position(p_pos);
+			} else {
+				ev->set_position(prev_pointer_pos);
+				ev->set_global_position(prev_pointer_pos);
+			}
 			ev->set_pressed(p_action == ACTION_BUTTON_PRESS);
 			int button_mask;
 			if (p_button_mask < 8) {
@@ -556,13 +574,20 @@ void OS_Android::process_mouse_event(int p_action, int p_button_mask, Point2 p_p
 
 		case ACTION_MOVE: {
 			Ref<InputEventMouseMotion> ev;
+
 			ev.instance();
-			ev->set_position(p_pos);
-			ev->set_global_position(p_pos);
-			ev->set_relative(p_pos - hover_prev_pos);
+			if (!p_is_capture) {
+				ev->set_position(p_pos);
+				ev->set_global_position(p_pos);
+				ev->set_relative(p_pos - prev_pointer_pos);
+				prev_pointer_pos = p_pos;
+			} else {
+				ev->set_position(prev_pointer_pos);
+				ev->set_global_position(prev_pointer_pos);
+				ev->set_relative(p_pos);
+			}
 			ev->set_button_mask(p_button_mask);
 			input->parse_input_event(ev);
-			hover_prev_pos = p_pos;
 		} break;
 	}
 }

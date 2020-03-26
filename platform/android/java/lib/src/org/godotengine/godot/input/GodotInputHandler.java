@@ -170,17 +170,7 @@ public class GodotInputHandler implements InputDeviceListener {
 			// in onGenericMotionEvent, so by touch event we can say that the event is also handled
 			return true;
 		}
-		final float x = event.getX();
-		final float y = event.getY();
-		final int buttonMask = event.getButtonState();
-		final int action = event.getAction();
-		queueEvent(new Runnable() {
-			@Override
-			public void run() {
-				GodotLib.mouseEvent(action, buttonMask, x, y);
-			}
-		});
-		return true;
+		return handleMouseEvent(event, false);
 	}
 
 	public boolean onGenericMotionEvent(MotionEvent event) {
@@ -229,7 +219,7 @@ public class GodotInputHandler implements InputDeviceListener {
 			return true;
 		} else if ((event.getSource() & InputDevice.SOURCE_MOUSE) == InputDevice.SOURCE_MOUSE) {
 			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-				return handleMouseEvent(event);
+				return handleMouseEvent(event, false);
 			}
 		}
 
@@ -317,6 +307,10 @@ public class GodotInputHandler implements InputDeviceListener {
 		onInputDeviceAdded(deviceId);
 	}
 
+	public boolean onCapturedPointerEvent(MotionEvent event) {
+		return handleMouseEvent(event, true); // the event here sends relative data so it path to be handled differently
+	}
+
 	private static class RangeComparator implements Comparator<MotionRange> {
 		@Override
 		public int compare(MotionRange arg0, MotionRange arg1) {
@@ -399,7 +393,12 @@ public class GodotInputHandler implements InputDeviceListener {
 		return -1;
 	}
 
-	private boolean handleMouseEvent(MotionEvent event) {
+	/**
+	 *
+	 * @param event
+	 * @param isCaptured - must be used and not MOUSE_MODE_CAPTURED because requestPointerCapture is not atomic and can make a race condition on fast mouse movement right after request
+	 */
+	private boolean handleMouseEvent(MotionEvent event, final boolean isCaptured) {
 		if (event.getActionMasked() == MotionEvent.ACTION_HOVER_ENTER ||
 				event.getActionMasked() == MotionEvent.ACTION_HOVER_MOVE ||
 				event.getActionMasked() == MotionEvent.ACTION_HOVER_EXIT) {
@@ -421,7 +420,7 @@ public class GodotInputHandler implements InputDeviceListener {
 			queueEvent(new Runnable() {
 				@Override
 				public void run() {
-					GodotLib.mouseEvent(action, buttonMask, x, y);
+					GodotLib.mouseEvent(action, buttonMask, x, y, isCaptured);
 				}
 			});
 			return true;
@@ -433,16 +432,16 @@ public class GodotInputHandler implements InputDeviceListener {
 				queueEvent(new Runnable() {
 					@Override
 					public void run() {
-						GodotLib.mouseEvent(MotionEvent.ACTION_BUTTON_PRESS, MOUSE_WHEEL_UP, x, y);
-						GodotLib.mouseEvent(MotionEvent.ACTION_BUTTON_RELEASE, MOUSE_WHEEL_UP, x, y);
+						GodotLib.mouseEvent(MotionEvent.ACTION_BUTTON_PRESS, MOUSE_WHEEL_UP, x, y, isCaptured);
+						GodotLib.mouseEvent(MotionEvent.ACTION_BUTTON_RELEASE, MOUSE_WHEEL_UP, x, y, isCaptured);
 					}
 				});
 			else {
 				queueEvent(new Runnable() {
 					@Override
 					public void run() {
-						GodotLib.mouseEvent(MotionEvent.ACTION_BUTTON_PRESS, MOUSE_WHEEL_DOWN, x, y);
-						GodotLib.mouseEvent(MotionEvent.ACTION_BUTTON_RELEASE, MOUSE_WHEEL_DOWN, x, y);
+						GodotLib.mouseEvent(MotionEvent.ACTION_BUTTON_PRESS, MOUSE_WHEEL_DOWN, x, y, isCaptured);
+						GodotLib.mouseEvent(MotionEvent.ACTION_BUTTON_RELEASE, MOUSE_WHEEL_DOWN, x, y, isCaptured);
 					}
 				});
 			}
@@ -450,19 +449,31 @@ public class GodotInputHandler implements InputDeviceListener {
 				queueEvent(new Runnable() {
 					@Override
 					public void run() {
-						GodotLib.mouseEvent(MotionEvent.ACTION_BUTTON_PRESS, MOUSE_WHEEL_RIGHT, x, y);
-						GodotLib.mouseEvent(MotionEvent.ACTION_BUTTON_RELEASE, MOUSE_WHEEL_RIGHT, x, y);
+						GodotLib.mouseEvent(MotionEvent.ACTION_BUTTON_PRESS, MOUSE_WHEEL_RIGHT, x, y, isCaptured);
+						GodotLib.mouseEvent(MotionEvent.ACTION_BUTTON_RELEASE, MOUSE_WHEEL_RIGHT, x, y, isCaptured);
 					}
 				});
 			} else {
 				queueEvent(new Runnable() {
 					@Override
 					public void run() {
-						GodotLib.mouseEvent(MotionEvent.ACTION_BUTTON_PRESS, MOUSE_WHEEL_LEFT, x, y);
-						GodotLib.mouseEvent(MotionEvent.ACTION_BUTTON_RELEASE, MOUSE_WHEEL_LEFT, x, y);
+						GodotLib.mouseEvent(MotionEvent.ACTION_BUTTON_PRESS, MOUSE_WHEEL_LEFT, x, y, isCaptured);
+						GodotLib.mouseEvent(MotionEvent.ACTION_BUTTON_RELEASE, MOUSE_WHEEL_LEFT, x, y, isCaptured);
 					}
 				});
 			}
+			return true;
+		} else if (event.getAction() == MotionEvent.ACTION_MOVE) {
+			final float x = event.getX();
+			final float y = event.getY();
+			final int buttonMask = event.getButtonState();
+			final int action = event.getAction();
+			queueEvent(new Runnable() {
+				@Override
+				public void run() {
+					GodotLib.mouseEvent(action, buttonMask, x, y, isCaptured);
+				}
+			});
 			return true;
 		}
 		return false;

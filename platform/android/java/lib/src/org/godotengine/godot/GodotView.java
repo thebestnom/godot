@@ -118,6 +118,11 @@ public class GodotView extends GLSurfaceView {
 		return inputHandler.onGenericMotionEvent(event) || super.onGenericMotionEvent(event);
 	}
 
+	@Override
+	public boolean onCapturedPointerEvent(MotionEvent event) {
+		return inputHandler.onCapturedPointerEvent(event);
+	}
+
 	private void init(XRMode xrMode, boolean translucent, int depth, int stencil) {
 
 		setPreserveEGLContextOnPause(true);

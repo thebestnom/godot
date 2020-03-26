@@ -55,11 +55,10 @@ public class GodotInputHandler implements InputDeviceListener {
 
 	private final GodotView godotView;
 	private final InputManagerCompat inputManager;
-	private int buttonsState = 0;
-	private final int MOUSE_WHEEL_UP = 5;
-	private final int MOUSE_WHEEL_DOWN = 6;
-	private final int MOUSE_WHEEL_RIGHT = 7;
-	private final int MOUSE_WHEEL_LEFT = 8;
+	private final static int MOUSE_WHEEL_UP = 1 << 3; // uses global input indexes
+	private final static int MOUSE_WHEEL_DOWN = 1 << 4;
+	private final static int MOUSE_WHEEL_RIGHT = 1 << 6;
+	private final static int MOUSE_WHEEL_LEFT = 1 << 5;
 
 	public GodotInputHandler(GodotView godotView) {
 		this.godotView = godotView;
@@ -171,13 +170,14 @@ public class GodotInputHandler implements InputDeviceListener {
 			// in onGenericMotionEvent, so by touch event we can say that the event is also handled
 			return true;
 		}
-		final int x = Math.round(event.getX());
-		final int y = Math.round(event.getY());
+		final float x = event.getX();
+		final float y = event.getY();
 		final int buttonMask = event.getButtonState();
+		final int action = event.getAction();
 		queueEvent(new Runnable() {
 			@Override
 			public void run() {
-				GodotLib.mouseMovedPressed(buttonMask, x, y);
+				GodotLib.mouseEvent(action, buttonMask, x, y);
 			}
 		});
 		return true;
@@ -228,7 +228,9 @@ public class GodotInputHandler implements InputDeviceListener {
 			});
 			return true;
 		} else if ((event.getSource() & InputDevice.SOURCE_MOUSE) == InputDevice.SOURCE_MOUSE) {
-			return handleMouseEvent(event);
+			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+				return handleMouseEvent(event);
+			}
 		}
 
 		return false;
@@ -411,78 +413,58 @@ public class GodotInputHandler implements InputDeviceListener {
 				}
 			});
 			return true;
-		} else if (event.getAction() == MotionEvent.ACTION_BUTTON_PRESS) {
-			final int x = Math.round(event.getX());
-			final int y = Math.round(event.getY());
-			final int button = getEventButton(event);
+		} else if (event.getAction() == MotionEvent.ACTION_BUTTON_PRESS || event.getAction() == MotionEvent.ACTION_BUTTON_RELEASE) {
+			final float x = event.getX();
+			final float y = event.getY();
+			final int buttonMask = event.getButtonState();
+			final int action = event.getAction();
 			queueEvent(new Runnable() {
 				@Override
 				public void run() {
-					GodotLib.mousePressed(button, x, y, true);
+					GodotLib.mouseEvent(action, buttonMask, x, y);
 				}
 			});
-			buttonsState = event.getButtonState();
-			return true;
-		} else if (event.getAction() == MotionEvent.ACTION_BUTTON_RELEASE) {
-			final int x = Math.round(event.getX());
-			final int y = Math.round(event.getY());
-			final int button = getEventButton(event);
-			queueEvent(new Runnable() {
-				@Override
-				public void run() {
-					GodotLib.mousePressed(button, x, y, false);
-				}
-			});
-			buttonsState = event.getButtonState();
 			return true;
 		} else if (event.getAction() == MotionEvent.ACTION_SCROLL) {
-			final int x = Math.round(event.getX());
-			final int y = Math.round(event.getY());
+			final float x = event.getX();
+			final float y = event.getY();
 
-			if (event.getAxisValue(MotionEvent.AXIS_VSCROLL) < 0.0f)
+			if (event.getAxisValue(MotionEvent.AXIS_VSCROLL) > 0.0f)
 				queueEvent(new Runnable() {
 					@Override
 					public void run() {
-						GodotLib.mousePressed(MOUSE_WHEEL_UP, x, y, true);
-						GodotLib.mousePressed(MOUSE_WHEEL_UP, x, y, false);
+						GodotLib.mouseEvent(MotionEvent.ACTION_BUTTON_PRESS, MOUSE_WHEEL_UP, x, y);
+						GodotLib.mouseEvent(MotionEvent.ACTION_BUTTON_RELEASE, MOUSE_WHEEL_UP, x, y);
 					}
 				});
 			else {
 				queueEvent(new Runnable() {
 					@Override
 					public void run() {
-						GodotLib.mousePressed(MOUSE_WHEEL_DOWN, x, y, true);
-						GodotLib.mousePressed(MOUSE_WHEEL_DOWN, x, y, false);
+						GodotLib.mouseEvent(MotionEvent.ACTION_BUTTON_PRESS, MOUSE_WHEEL_DOWN, x, y);
+						GodotLib.mouseEvent(MotionEvent.ACTION_BUTTON_RELEASE, MOUSE_WHEEL_DOWN, x, y);
 					}
 				});
 			}
-			if (event.getAxisValue(MotionEvent.AXIS_HSCROLL) < 0.0f) {
+			if (event.getAxisValue(MotionEvent.AXIS_HSCROLL) > 0.0f) {
 				queueEvent(new Runnable() {
 					@Override
 					public void run() {
-						GodotLib.mousePressed(MOUSE_WHEEL_RIGHT, x, y, true);
-						GodotLib.mousePressed(MOUSE_WHEEL_RIGHT, x, y, false);
+						GodotLib.mouseEvent(MotionEvent.ACTION_BUTTON_PRESS, MOUSE_WHEEL_RIGHT, x, y);
+						GodotLib.mouseEvent(MotionEvent.ACTION_BUTTON_RELEASE, MOUSE_WHEEL_RIGHT, x, y);
 					}
 				});
 			} else {
 				queueEvent(new Runnable() {
 					@Override
 					public void run() {
-						GodotLib.mousePressed(MOUSE_WHEEL_LEFT, x, y, true);
-						GodotLib.mousePressed(MOUSE_WHEEL_LEFT, x, y, false);
+						GodotLib.mouseEvent(MotionEvent.ACTION_BUTTON_PRESS, MOUSE_WHEEL_LEFT, x, y);
+						GodotLib.mouseEvent(MotionEvent.ACTION_BUTTON_RELEASE, MOUSE_WHEEL_LEFT, x, y);
 					}
 				});
 			}
 			return true;
 		}
 		return false;
-	}
-
-	private int getEventButton(MotionEvent event) {
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-			return event.getActionButton();
-		} else {
-			return event.getButtonState() ^ buttonsState;
-		}
 	}
 }

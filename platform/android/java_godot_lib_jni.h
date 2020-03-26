@@ -46,8 +46,7 @@ JNIEXPORT void JNICALL Java_org_godotengine_godot_GodotLib_step(JNIEnv *env, jcl
 JNIEXPORT void JNICALL Java_org_godotengine_godot_GodotLib_back(JNIEnv *env, jclass clazz);
 JNIEXPORT void JNICALL Java_org_godotengine_godot_GodotLib_touch(JNIEnv *env, jclass clazz, jint ev, jint pointer, jint count, jintArray positions);
 JNIEXPORT void JNICALL Java_org_godotengine_godot_GodotLib_hover(JNIEnv *env, jclass clazz, jint p_type, jint p_x, jint p_y);
-JNIEXPORT void JNICALL Java_org_godotengine_godot_GodotLib_mousePressed(JNIEnv *env, jclass clazz, jint p_button, jint p_x, jint p_y, jboolean pressed);
-JNIEXPORT void JNICALL Java_org_godotengine_godot_GodotLib_mouseMovedPressed(JNIEnv *env, jclass clazz, jint p_button_mask, jint p_x, jint p_y);
+JNIEXPORT void JNICALL Java_org_godotengine_godot_GodotLib_mouseEvent(JNIEnv *env, jclass clazz, jint p_action, jint p_button_mask, jfloat p_x, jfloat p_y);
 JNIEXPORT void JNICALL Java_org_godotengine_godot_GodotLib_doubleTap(JNIEnv *env, jclass clazz, jint p_button_mask, jint p_x, jint p_y);
 JNIEXPORT void JNICALL Java_org_godotengine_godot_GodotLib_scroll(JNIEnv *env, jclass clazz, jint p_x, jint p_y);
 JNIEXPORT void JNICALL Java_org_godotengine_godot_GodotLib_key(JNIEnv *env, jclass clazz, jint p_scancode, jint p_unicode_char, jboolean p_pressed);

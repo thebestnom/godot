@@ -43,11 +43,14 @@ private:
 
 	jmethodID _request_pointer_capture = 0;
 	jmethodID _release_pointer_capture = 0;
+	jmethodID _set_pointer_icon = 0;
+
 public:
 	GodotJavaViewWrapper(jobject pJobject);
 
 	void request_pointer_capture();
 	void release_pointer_capture();
+	void set_pointer_icon(int pointer_type);
 };
 
 #endif //GODOT_JAVA_GODOT_VIEW_WRAPPER_H

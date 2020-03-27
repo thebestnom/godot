@@ -128,6 +128,7 @@ Error OS_Android::initialize(const VideoMode &p_desired, int p_video_driver, int
 	bool gl_initialization_error = false;
 
 	buttons_state = 0;
+	cursor_shape = OS::CURSOR_ARROW;
 
 	while (true) {
 		if (use_gl3) {
@@ -215,11 +216,17 @@ void OS_Android::alert(const String &p_alert, const String &p_title) {
 	godot_java->alert(p_alert, p_title);
 }
 
-void OS_Android::set_mouse_mode(MouseMode p_mode) {
+void OS_Android::set_mouse_mode(OS::MouseMode p_mode) {
 	if (mouse_mode == p_mode)
 		return;
 
-	if (p_mode == MouseMode::MOUSE_MODE_CAPTURED) {
+	if (p_mode == OS::MouseMode::MOUSE_MODE_HIDDEN) {
+		godot_java->get_godot_view()->set_pointer_icon(NULL);
+	} else {
+		set_cursor_shape(cursor_shape);
+	}
+
+	if (p_mode == OS::MouseMode::MOUSE_MODE_CAPTURED) {
 		godot_java->get_godot_view()->request_pointer_capture();
 	} else {
 		godot_java->get_godot_view()->release_pointer_capture();
@@ -738,6 +745,42 @@ String OS_Android::get_clipboard() const {
 	}
 
 	return OS_Unix::get_clipboard();
+}
+
+void OS_Android::set_cursor_shape(OS::CursorShape p_shape) {
+	// https://developer.android.com/reference/android/view/PointerIcon
+	static const int android_cursors[OS::CURSOR_MAX] = {
+		1000,
+		1008,
+		1002,
+		1007,
+		1004, // WAIT
+		1004, // BUSY
+		1021,
+		1021,
+		1000, // no forbidden
+		1015,
+		1014,
+		1017,
+		1016,
+		1020,
+		1015,
+		1014,
+		1003,
+	};
+	if (cursor_shape == p_shape) {
+		return;
+	}
+
+	cursor_shape = p_shape;
+
+	if (mouse_mode == OS::MouseMode::MOUSE_MODE_VISIBLE || mouse_mode == OS::MouseMode::MOUSE_MODE_CONFINED) {
+		godot_java->get_godot_view()->set_pointer_icon(android_cursors[cursor_shape]);
+	}
+}
+
+OS::CursorShape OS_Android::get_cursor_shape() const {
+	return cursor_shape;
 }
 
 String OS_Android::get_model_name() const {

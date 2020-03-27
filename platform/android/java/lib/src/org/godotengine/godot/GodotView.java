@@ -30,12 +30,17 @@
 
 package org.godotengine.godot;
 import android.annotation.SuppressLint;
+import android.annotation.TargetApi;
 import android.graphics.PixelFormat;
 import android.opengl.GLSurfaceView;
+import android.os.Build;
+import android.support.annotation.RequiresApi;
 import android.view.GestureDetector;
 import android.view.InputDevice;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
+import android.view.PointerIcon;
+
 import org.godotengine.godot.input.GodotGestureHandler;
 import org.godotengine.godot.input.GodotInputHandler;
 import org.godotengine.godot.utils.GLUtils;
@@ -73,6 +78,7 @@ public class GodotView extends GLSurfaceView {
 	private final GodotInputHandler inputHandler;
 	private final GestureDetector detector;
 	private final GodotRenderer godotRenderer;
+	private PointerIcon pointerIcon;
 
 	public GodotView(Godot activity, XRMode xrMode, boolean p_use_gl3, boolean p_use_32_bits, boolean p_use_debug_opengl) {
 		super(activity);
@@ -84,6 +90,9 @@ public class GodotView extends GLSurfaceView {
 		this.inputHandler = new GodotInputHandler(this);
 		this.detector = new GestureDetector(activity, new GodotGestureHandler(this));
 		this.godotRenderer = new GodotRenderer();
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+			pointerIcon = PointerIcon.getSystemIcon(getContext(), PointerIcon.TYPE_DEFAULT);
+		}
 		init(xrMode, false, 16, 0);
 	}
 
@@ -121,6 +130,20 @@ public class GodotView extends GLSurfaceView {
 	@Override
 	public boolean onCapturedPointerEvent(MotionEvent event) {
 		return inputHandler.onCapturedPointerEvent(event);
+	}
+
+	/**
+	 * called from JNI to change pointer icon
+	 */
+	public void setPointerIcon(int pointerType) {
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+			pointerIcon = PointerIcon.getSystemIcon(getContext(), pointerType);
+		}
+	}
+
+	@Override
+	public PointerIcon onResolvePointerIcon(MotionEvent me, int pointerIndex) {
+		return pointerIcon;
 	}
 
 	private void init(XRMode xrMode, boolean translucent, int depth, int stencil) {

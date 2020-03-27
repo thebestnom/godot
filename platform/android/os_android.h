@@ -107,10 +107,11 @@ private:
 	static const int ACTION_MOVE = 2;
 	int buttons_state;
 
-	MouseMode mouse_mode;
+	OS::MouseMode mouse_mode;
+	OS::CursorShape cursor_shape;
 
 public:
-	void set_mouse_mode(MouseMode p_mode);
+	void set_mouse_mode(OS::MouseMode p_mode);
 	// functions used by main to initialize/deinitialize the OS
 	virtual int get_video_driver_count() const;
 	virtual const char *get_video_driver_name(int p_driver) const;
@@ -189,6 +190,10 @@ public:
 	virtual String get_locale() const;
 	virtual void set_clipboard(const String &p_text);
 	virtual String get_clipboard() const;
+
+	void set_cursor_shape(OS::CursorShape p_shape);
+	OS::CursorShape get_cursor_shape() const;
+
 	virtual String get_model_name() const;
 	virtual int get_screen_dpi(int p_screen = 0) const;
 

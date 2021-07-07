@@ -889,6 +889,8 @@ public:
 	void run_stop();
 	bool is_run_playing() const;
 	String get_run_playing_scene() const;
+
+	void install_android_template();
 };
 
 struct EditorProgress {
